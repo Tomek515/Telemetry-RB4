@@ -30,4 +30,7 @@ struct gpiod_line_request_config {
   inline int         gpiod_line_event_wait(gpiod_line*, const struct timespec*) { return 0; }   // 0 = brak zdarzeń
   inline int         gpiod_line_event_read(gpiod_line*, struct gpiod_line_event*) { return -1; } // brak danych
   inline void        gpiod_line_release(gpiod_line*)                           {}
+  // ...existing code...
+struct gpiod_line_event {}; // Add this line to provide a dummy definition
+// ...existing code...
 #endif

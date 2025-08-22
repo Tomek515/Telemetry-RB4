@@ -39,3 +39,33 @@ if (!line || gpiod_line_request_rising_edge_events(line, "hall_sensor") < 0) {
         }
     }).detach();
 }
+
+void HallSensor::addRotationSensor(){
+    auto now = std::chrono::steady_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - interrupt_time).count();
+    if (duration > 30) { // Debounce time of 30 ms
+        rotation_sensor2++;
+        interrupt_time = now;
+    }
+}
+
+void HallSensor::calculateVelocity(){
+    auto currentTime = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - last_velocity_measure);
+
+    if (elapsed_ms >= measure_time_ms) {
+        long rotations = rotation_sensor2;
+        rotation_sensor2 = 0;
+
+        float distance = rotation_sensor2 * WHEEL_CIRCUMFERENCE;
+        float local_time = elapsed_ms.count() / 1000.0f; 
+        float velocity = distance / local_time; 
+       
+        current_velocity = velocity * 3.6f;
+        rotation_sensor2 = 0;
+        last_velocity_measure = currentTime;
+    }
+}
+void HallSensor::loop(){
+    calculateVelocity();
+}
