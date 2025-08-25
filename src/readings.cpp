@@ -83,3 +83,67 @@ float adcToVoltage(uint16_t adcValue){
 float adcToCurrent(uint16_t adcValue){
     return (((float)adcValue * vRef / 4095.0) - zeroCurrentVoltage) / sensitivityACS * constCurrentScalling;
 }
+
+uint16_t readADCWithCS(int deviceIndex, uint8_t channel){
+    if (deviceIndex >= num_devices || channel > 1 ) return 0;
+
+    selectCS(deviceIndex);
+
+    uint8_t tx[] = { 0b00000001, (uint8_t)(0b10000000 | (channel << 6)), 0x00};
+     uint8_t rx[3] = {};
+
+    struct spi_ioc_transfer tr = {
+        .tx_buf = (unsigned long)tx,
+        .rx_buf = (unsigned long)rx,
+        .len = 3,
+        .speed_hz = 1000000,
+        .delay_usecs = 0,
+        .bits_per_word = 8,
+    };
+    if (ioctl(spi_fd, SPI_IOC_MESSAGE(1), &tr) < 1) {
+        std::cerr << "SPI transfer failed " << "\n";
+        deselectCS(deviceIndex);
+        return 0;
+    }
+
+    deselectCS(deviceIndex);
+
+    uint16_t result = ((rx[1] & 0x0F) << 8) | rx[2];
+    return result;
+}
+
+extern HallSensor hall_sensor_instance;
+
+Readings exec_reading(){
+    Readings readings;
+
+    for(int i = 0; i < 5; i++){
+        float voltage = readADCWithCS(i, 0);
+        float current = readADCWithCS(i, 1);
+
+        reading.voltage[i] = adcToVoltage(voltage);
+        reading.current[i] = adcToCurrent(current);
+    }
+
+    readings.velocity1 = hall_sensor_instance.current_velocity;
+
+    return readings;
+}
+
+std::string readingsToString(const Readings& reading) {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3);
+
+    for (int i = 0; i < 5; ++i) {
+        oss << reading.voltage[i] << ";";
+    }
+
+    for (int i = 0; i < 5; ++i) {
+        oss << reading.current[i] << ";";
+    }
+
+    oss << reading.velocity1;
+
+    return oss.str();
+
+}
