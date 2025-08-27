@@ -25,9 +25,11 @@ static volatile long rotation_sensor1;
 static volatile long rotation_sensor2;
 
 static std::chrono::steady_clock::time_point interrupt_time;
-
+std::chrono::steady_clock::time_point last_velocity_measure;
 const std::chrono::milliseconds measure_time_ms{1500};
 
 
 
 };
+
+extern HallSensor hall_sensor_instance;

@@ -32,14 +32,14 @@ int maint() {
             lastMeasurementTime = now;
 
             Readings reading = exec_reading();
-            std::cout << readingToString(reading) << "\n";
+            std::cout << readingsToString(reading) << "\n";
             sd_card_save_append(reading);
 
             if (now - lastFlushTime >= flushInterval) {
                 lastFlushTime = now;
 
                 std::cout<<"Flushing"<<std::endl;
-                server_communication_instance.publishMqttMessage(readingToString(reading));
+                server_communication_instance.publishMqttMessage(readingsToString(reading));
             }
         }
 

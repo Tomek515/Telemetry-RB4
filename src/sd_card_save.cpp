@@ -22,7 +22,7 @@ void sd_card_save_init() {
 
 void sd_card_save_append(Readings reading) {
     if (logFile.is_open()) {
-        logFile<< millis_log() << ": " << readingToString(reading) << "\n"; //TODO: Change those values
+        logFile<< millis_log() << ": " << readingsToString(reading) << "\n"; //TODO: Change those values
     } else {
         std::cerr << "Log file not open, cannot write.\n";
     }

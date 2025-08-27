@@ -10,4 +10,4 @@ struct Readings {
 
 void readings_init();
 Readings exec_reading();
-std::string readings_to_string(const Readings& readings);
+std::string readingsToString(const Readings& readings);
