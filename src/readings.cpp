@@ -121,8 +121,8 @@ Readings exec_reading(){
         float voltage = readADCWithCS(i, 0);
         float current = readADCWithCS(i, 1);
 
-        reading.voltage[i] = adcToVoltage(voltage);
-        reading.current[i] = adcToCurrent(current);
+        readings.voltage[i] = adcToVoltage(voltage);
+        readings.current[i] = adcToCurrent(current);
     }
 
     readings.velocity1 = hall_sensor_instance.current_velocity;
