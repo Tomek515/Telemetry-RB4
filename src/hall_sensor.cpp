@@ -4,7 +4,7 @@
 #include <chrono>
 #include <atomic>
 #include <iostream>
-HallSensor hall_sesnor_instance;
+HallSensor hall_sensor_instance;
 
 volatile long HallSensor::rotation_sensor1 = 0;
 volatile long HallSensor::rotation_sensor2 = 0;
@@ -57,12 +57,11 @@ void HallSensor::calculateVelocity(){
         long rotations = rotation_sensor2;
         rotation_sensor2 = 0;
 
-        float distance = rotation_sensor2 * WHEEL_CIRCUMFERENCE;
+        float distance = rotations * WHEEL_CIRCUMFERENCE;
         float local_time = elapsed_ms.count() / 1000.0f; 
         float velocity = distance / local_time; 
        
         current_velocity = velocity * 3.6f;
-        rotation_sensor2 = 0;
         last_velocity_measure = currentTime;
     }
 }

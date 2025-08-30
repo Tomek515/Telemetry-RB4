@@ -11,3 +11,4 @@ struct Readings {
 void readings_init();
 Readings exec_reading();
 std::string readingsToString(const Readings& readings);
+void readings_close();

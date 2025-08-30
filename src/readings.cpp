@@ -1,8 +1,8 @@
 #include "readings.hpp"
 #include "hall_sensor.hpp"
 #include <fcntl.h>
-#include <linux/spi/spidev.h>
-#include <sys/ioctl.h>
+#include <spidev.h>
+#include <ioctl.h>
 #include <unistd.h>
 #include <iostream>
 #include <cstring>
@@ -15,10 +15,10 @@
 #define SPI_DEVICE "/dev/spidev0.0"
 #define CS_GPIO_CHIP "/dev/gpiochip0"
 #define CS_PIN_1 5
-#define CS_PIN_1 6
-#define CS_PIN_1 22
-#define CS_PIN_1 7
-#define CS_PIN_1 12
+#define CS_PIN_2 6
+#define CS_PIN_3 22
+#define CS_PIN_4 7
+#define CS_PIN_5 12
 
 const int cs_pins[5] = {CS_PIN_1, CS_PIN_2, CS_PIN_3, CS_PIN_4, CS_PIN_5};
 const int num_devices = sizeof(cs_pins) / sizeof(cs_pins[0]);
