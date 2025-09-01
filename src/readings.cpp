@@ -31,7 +31,7 @@ const float zeroCurrentVoltage = 2.551;
 const float sensitivityACS = 0.040;
 const float constCurrentScalling = 1.06;
 
-int spid_fd = -1;
+int spi_fd = -1;
 gpiod_line_bulk cs_lines;
 gpiod_chip* chip = nullptr;
 

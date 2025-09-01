@@ -43,7 +43,7 @@ int main() {
 
         if (now - lastMeasurementTime >= measurementInterval) {
             lastMeasurementTime = now;
-
+            hall_sensor_instance.loop();
             Readings reading = exec_reading();               
             std::cout << readingsToString(reading) << "\n";  
             sd_card_save_append(reading);                   
